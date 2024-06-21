@@ -12,6 +12,8 @@ public class Config {
     public static final ForgeConfigSpec.ConfigValue<Integer> hourTime;
     public static final ForgeConfigSpec.ConfigValue<Integer> minuteTime;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> lifeAmount;
+
 
     static {
         BUILDER.push("Configurations for DeathBan Mod");
@@ -20,6 +22,8 @@ public class Config {
         dayTime = BUILDER.comment("The day duration of the death ban").define("Days", 0);
         hourTime = BUILDER.comment("The hour duration of the death ban").define("Hours", 0);
         minuteTime = BUILDER.comment("The minute duration of the death ban").define("Minutes", 0);
+        lifeAmount = BUILDER.comment("The number of times you can die before you get banned").define("Lives", 1);
+
 
         BUILDER.pop();
 

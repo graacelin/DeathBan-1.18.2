@@ -7,6 +7,8 @@ import in.gracel.deathban.helpers.DateTimeCalculator;
 import com.mojang.logging.LogUtils;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.ServerStatsCounter;
+import net.minecraft.stats.Stats;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -84,14 +86,17 @@ public class DeathBan {
         if (!event.getEntity().getCommandSenderWorld().isClientSide() &&
                 event.getEntity() instanceof ServerPlayer deadPlayer &&
                 !server.isSingleplayer() && deathBanOn) {
-            String reason = MessageParser.deathReasonMessage(deadPlayer, event.getSource());
-            Date expire = DateTimeCalculator.getExpiryDate(
-                    Config.weekTime.get(),
-                    Config.dayTime.get(),
-                    Config.hourTime.get(),
-                    Config.minuteTime.get()
-            );
-            banList.addToBanList(server, deadPlayer.getGameProfile(), expire, reason);
+            if( (deadPlayer.getStats().getValue(Stats.CUSTOM.get(Stats.DEATHS)) % Config.lifeAmount.get() ) == 0 )
+            {
+                String reason = MessageParser.deathReasonMessage(deadPlayer, event.getSource());
+                Date expire = DateTimeCalculator.getExpiryDate(
+                        Config.weekTime.get(),
+                        Config.dayTime.get(),
+                        Config.hourTime.get(),
+                        Config.minuteTime.get()
+                );
+                banList.addToBanList(server, deadPlayer.getGameProfile(), expire, reason);
+            }
         }
     }
 }

@@ -23,7 +23,7 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'org.spongepowered.mixin'
 
 
-version = '3.0.0'
+version = '3.0.1'
 group = 'in.gracel.deathban' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'deathban'
 
