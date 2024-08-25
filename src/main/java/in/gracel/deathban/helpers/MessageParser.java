@@ -2,37 +2,36 @@ package in.gracel.deathban.helpers;
 
 import in.gracel.deathban.config.Config;
 import in.gracel.deathban.DeathBan;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 public class MessageParser {
 
-    public static String deathReasonMessage(ServerPlayer deadPlayer, DamageSource source) {
+    public static String deathReasonMessage(ServerPlayerEntity deadPlayer, DamageSource source) {
         String deathMessage = source.getLocalizedDeathMessage(deadPlayer).getString();
         return deathMessage
                 .replaceFirst(deadPlayer.getName().getString(), "You")
                 .replaceFirst("was", "were");
     }
 
-    public static Component banMessage(String reason, String expire) {
-        String message = String.format( """
-                §4§lYou died!§r
-                Cause of death: §e%s§r
-                Ban expires in: §e%s§r
-                """,
+    public static ITextComponent banMessage(String reason, String expire) {
+        String message = String.format( 
+                "§4§lYou died!§r\n"
+                + "Cause of death: §e%s§r\n"
+                + "Ban expires in: §e%s§r\n",
                 reason, expire);
-        return new TranslatableComponent(message);
+        return new TranslationTextComponent(message);
     }
 
-    public static Component firstTimeMessage(ServerPlayer joinedPlayer) {
+    public static ITextComponent firstTimeMessage(ServerPlayerEntity joinedPlayer) {
         String message = String.format("[%s] §bWelcome %s! This server is currently running §4%s§r§b. Upon death, you will be banned for §6%s§r§b.",
                 DeathBan.MOD_NAME, joinedPlayer.getName().getString(), DeathBan.MOD_NAME, getBanTimeFromConfig());
-        return new TranslatableComponent(message);
+        return new TranslationTextComponent(message);
     }
 
     public static String getTimeRemaining(LocalDateTime currentDate, LocalDateTime expireDate) {
